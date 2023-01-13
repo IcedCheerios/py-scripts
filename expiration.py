@@ -6,6 +6,8 @@ from datetime import datetime
 from sys import argv,exit
 import smtplib
 from email.message import EmailMessage
+import datetime
+import logging
 
 now = datetime.now()
 
@@ -27,6 +29,14 @@ def sendMail(content, subject):
     mailserver.send_message(msg)
     mailserver.quit()
 
+def logError(error, domain):
+    now = datetime.now()
+    timeStamp = datetime.timestamp(now)
+
+    f = open("log.txt", "a")
+    f.write(timeStamp + " " + domain + " "  + str(error))
+    f.write("------------------------------------------")
+    f.close()
 
 
 while True:
@@ -46,18 +56,23 @@ while True:
         else:
             w.expiration_date = w.expiration_date 
 
-        domain_expiration_date = str(w.expiration_date.day) + '/' + str(w.expiration_date.month) + '/' + str(w.expiration_date.year)
 
-        timedelta = w.expiration_date - now
-        days_to_expire = timedelta.days
+        try:
+            domain_expiration_date = str(w.expiration_date.day) + '/' + str(w.expiration_date.month) + '/' + str(w.expiration_date.year)
+
+            timedelta = w.expiration_date - now
+            days_to_expire = timedelta.days
 
 
-        if timedelta.days <= 30 and timedelta.days > 10:
-            msg =  'WARNING:' + domain + ' is going to expire in ' + str(timedelta.days) + ' days, expiration date is set to ' + domain_expiration_date
-            sendMail(msg, 'WARNING:')
-        elif timedelta.days <= 10:
-            msg =  'CRITICAL:' + domain + ' is going to expire in ' + str(timedelta.days) + ' days, expiration date is set to ' + domain_expiration_date
-            sendMail(msg, 'CRITICAL:')
+            if timedelta.days <= 30 and timedelta.days > 10:
+                msg =  'WARNING:' + domain + ' is going to expire in ' + str(timedelta.days) + ' days, expiration date is set to ' + domain_expiration_date
+                sendMail(msg, 'WARNING:')
+            elif timedelta.days <= 10:
+                msg =  'CRITICAL:' + domain + ' is going to expire in ' + str(timedelta.days) + ' days, expiration date is set to ' + domain_expiration_date
+                sendMail(msg, 'CRITICAL:')
+
+        except Exception as e:
+            logError(e,domain)
 
 
 
