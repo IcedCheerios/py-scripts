@@ -42,6 +42,7 @@ def logError(error, domain):
 while True:
         domain = domainFile.readline()
         domain = domain.strip("\n")
+        print(domain)
         if not domain:
             break
 
