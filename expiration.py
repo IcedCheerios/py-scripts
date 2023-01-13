@@ -34,7 +34,7 @@ def logError(error, domain):
     timeStamp = datetime.timestamp(now)
 
     f = open("log.txt", "a")
-    f.write(timeStamp + " " + domain + " "  + str(error))
+    f.write(str(timeStamp) + " " + domain + " "  + str(error))
     f.write("------------------------------------------")
     f.close()
 
