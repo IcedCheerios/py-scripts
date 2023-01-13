@@ -32,10 +32,11 @@ def sendMail(content, subject):
 def logError(error, domain):
     now = datetime.now()
     timeStamp = datetime.timestamp(now)
+    date = datetime.fromtimestamp(timeStamp)
 
     f = open("log.txt", "a")
-    f.write(str(timeStamp) + " " + domain + " "  + str(error))
-    f.write("------------------------------------------")
+    f.write(str(date) + " " + domain + " "  + str(error) + "\n")
+    f.write("--------------------------------------------------------------------------\n")
     f.close()
 
 
