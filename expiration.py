@@ -6,7 +6,7 @@ from datetime import datetime
 from sys import argv,exit
 import smtplib
 from email.message import EmailMessage
-import datetime
+from datetime import datetime
 import logging
 
 now = datetime.now()
